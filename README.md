@@ -6,6 +6,7 @@ This repository contains the required code for the scripting project of IRSI cer
 
 ### Install
 Install python virtual environment to have a python sandbox with the needed dependencies
+
 Linux/macOS
 ```bash
 sudo apt install python3-venv
