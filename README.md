@@ -15,6 +15,7 @@ Install from https://www.python.org/downloads/windows/
 
 ### Create Virtual Environment
 Create a virtual environment for our python depencencies
+
 Linux/macOS
 ```bash
 python3 -m venv venv
