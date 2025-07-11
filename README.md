@@ -39,7 +39,17 @@ venv\Scripts\activate
 
 ### Install the dependencies 
 
+Install python dependencies
+
 ```bash
 pip install -r requirements.txt
 ```
+
+Install pdflatex dependencies
+
+```bash
+sudo apt install texlive-latex-base
+```
+
+
 

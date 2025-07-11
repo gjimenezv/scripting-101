@@ -1,0 +1,2 @@
+id_transaccion,nombre,direccion,ciudad,correo,telefono,ip,monto,cantidad,pago,estado_pago,timestamp
+FA-1745163069,Lisa Livingston,"1413 Noble Mews Apt. 298, Lucerofort, VA 24349",Lake Deanna,brandy42@example.com,(792)907-9504,1.81.164.191,610.57,3,fraccionado,fallido,2025-04-20 09:31:09
