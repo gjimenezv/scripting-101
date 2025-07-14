@@ -8,7 +8,7 @@ fake = Faker('es_MX')
 
 def generar_compras(num_transacciones=100):
     hoy = datetime.now().strftime('%Y%m%d')
-    nombre_archivo = f'data/compras_{hoy}.csv'
+    nombre_archivo = f'data/{hoy}.csv'
     
     with open(nombre_archivo, 'w', newline='') as csvfile:
         campos = ['id_transaccion','nombre', 'ciudad', 'direccion', 'correo', 'telefono', 
