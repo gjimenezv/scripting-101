@@ -2,6 +2,7 @@ from faker import Faker
 import random
 import csv
 from datetime import datetime
+import time
 
 fake = Faker('es_MX')
 
@@ -10,14 +11,18 @@ def generar_compras(num_transacciones=100):
     nombre_archivo = f'data/compras_{hoy}.csv'
     
     with open(nombre_archivo, 'w', newline='') as csvfile:
-        campos = ['nombre', 'ciudad', 'direccion', 'correo', 'telefono', 
+        campos = ['id_transaccion','nombre', 'ciudad', 'direccion', 'correo', 'telefono', 
                  'ip', 'monto', 'modalidad_pago', 'estado_pago', 'timestamp']
         writer = csv.DictWriter(csvfile, fieldnames=campos)
         writer.writeheader()
         
         for _ in range(num_transacciones):
+            dt = fake.date_time_this_year()
+            numero_random =  int(time.mktime(dt.timetuple()))
+            id_transaccion = hoy + "-" + str(numero_random)[-3:]
             if random.random() < 0.95:
                 writer.writerow({
+                    'id_transaccion': id_transaccion,
                     'nombre': fake.name(),
                     'ciudad': fake.city(),
                     'direccion': fake.address().replace('\n', ', '),
@@ -32,6 +37,7 @@ def generar_compras(num_transacciones=100):
             else:
                 # Generar registro con error
                 writer.writerow({
+                    'id_transaccion': id_transaccion,
                     'nombre': fake.name(),
                     'ciudad': '',  # Campo vacío a propósito
                     'direccion': fake.address().replace('\n', ', '),
