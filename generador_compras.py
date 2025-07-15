@@ -25,7 +25,7 @@ def generar_compras(num_transacciones=5):
                     'id_transaccion': id_transaccion,
                     'nombre': fake.name(),
                     'ciudad': fake.city(),
-                    'direccion': fake.address().replace('\n', ', '),
+                    'direccion': fake.address().replace('\n', '- ').replace(',', ' '),
                     'correo': fake.email(),
                     'telefono': fake.phone_number(),
                     'ip': fake.ipv4(),
@@ -40,7 +40,7 @@ def generar_compras(num_transacciones=5):
                     'id_transaccion': id_transaccion,
                     'nombre': fake.name(),
                     'ciudad': '',  # Campo vacío a propósito
-                    'direccion': fake.address().replace('\n', ', '),
+                    'direccion': fake.address().replace('\n', '- ').replace(',', ' '),
                     'correo': 'correo_invalido',
                     'telefono': 'abc123',  # Teléfono inválido
                     'ip': '256.300.1.1',  # IP inválida
