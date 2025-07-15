@@ -53,13 +53,13 @@ pip install -r requirements.txt
 Install the `pdflatex` dependencies:
 
 ```bash
-sudo apt install texlive-latex-base
+sudo apt install texlive-latex-base texlive-latex-extra -y
 ```
 
 ## How to Run
 
 1. **Generate Purchases CSV:**  
-    Run `generador_compras.py` to create a new file in `data/[date].csv` containing 1 to 10 randomly generated bills using the Faker package.
+    Run `generador_compras.py` to create a new file in `bills/[date].csv` containing 1 to 10 randomly generated bills using the Faker package.
     ```bash
     python3 generador_compras.py
     ```
@@ -71,7 +71,7 @@ sudo apt install texlive-latex-base
     ```
 
 3. **Generate Invoices:**  
-    Run `generador_facturas.sh` to generate a `templates/[id_transaccion].tex` file for each bill (row) in the CSV file `data/[date].csv`, using `template.tex` as a base and replacing the relevant values.
+    Run `generador_facturas.sh` to generate a `templates/[id_transaccion].tex` file for each bill (row) in the CSV file `bills/[date].csv`, using `template.tex` as a base and replacing the relevant values.
     ```bash
     ./generador_facturas.sh
     ```
