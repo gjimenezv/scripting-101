@@ -31,39 +31,22 @@ echo "Procesando archivo: $CSV"
 
 while read line; do
 
-    # Usar awk para separar las columnas
-    id_transaccion=$(echo "$line" | awk -F',' '{print $1}')
-    nombre=$(echo "$line" | awk -F',' '{print $2}')
-    ciudad=$(echo "$line" | awk -F',' '{print $3}')
-    direccion=$(echo "$line" | awk -F',' '{print $4}')
-    correo=$(echo "$line" | awk -F',' '{print $5}')
-    telefono=$(echo "$line" | awk -F',' '{print $6}')
-    ip=$(echo "$line" | awk -F',' '{print $7}')
-    cantidad=$(echo "$line" | awk -F',' '{print $8}')
-    monto=$(echo "$line" | awk -F',' '{print $9}')
-    modalidad_pago=$(echo "$line" | awk -F',' '{print $10}')
-    estado_pago=$(echo "$line" | awk -F',' '{print $11}')
-    timestamp=$(echo "$line" | awk -F',' '{print $12}')
-
-    # Limpiar comillas de los campos
-    id_transaccion=$(echo "$id_transaccion" | sed 's/^"//;s/"$//')
-    nombre=$(echo "$nombre" | sed 's/^"//;s/"$//')
-    ciudad=$(echo "$ciudad" | sed 's/^"//;s/"$//')
-    direccion=$(echo "$direccion" | sed 's/^"//;s/"$//')
-    correo=$(echo "$correo" | sed 's/^"//;s/"$//')
-    telefono=$(echo "$telefono" | sed 's/^"//;s/"$//')
-    ip=$(echo "$ip" | sed 's/^"//;s/"$//')
-    monto=$(echo "$monto" | sed 's/^"//;s/"$//')
-    cantidad=$(echo "$cantidad" | sed 's/^"//;s/"$//')
-    modalidad_pago=$(echo "$modalidad_pago" | sed 's/^"//;s/"$//')
-    estado_pago=$(echo "$estado_pago" | sed 's/^"//;s/"$//')
-
+    # Usar awk para separar las columnas y sed para limpiar comillas en un solo paso
+    id_transaccion=$(echo "$line" | awk -F',' '{print $1}' | sed 's/^"//;s/"$//')
+    nombre=$(echo "$line" | awk -F',' '{print $2}' | sed 's/^"//;s/"$//')
+    ciudad=$(echo "$line" | awk -F',' '{print $3}' | sed 's/^"//;s/"$//')
+    direccion=$(echo "$line" | awk -F',' '{print $4}' | sed 's/^"//;s/"$//')
+    correo=$(echo "$line" | awk -F',' '{print $5}' | sed 's/^"//;s/"$//')
+    telefono=$(echo "$line" | awk -F',' '{print $6}' | sed 's/^"//;s/"$//')
+    ip=$(echo "$line" | awk -F',' '{print $7}' | sed 's/^"//;s/"$//')
+    cantidad=$(echo "$line" | awk -F',' '{print $8}' | sed 's/^"//;s/"$//')
+    monto=$(echo "$line" | awk -F',' '{print $9}' | sed 's/^"//;s/"$//')
+    modalidad_pago=$(echo "$line" | awk -F',' '{print $10}' | sed 's/^"//;s/"$//')
+    estado_pago=$(echo "$line" | awk -F',' '{print $11}' | sed 's/^"//;s/"$//')
     # Para timestamp convertimos a fecha legible
-    fecha_limpia=$(echo "$timestamp" | sed 's/T/ /' | sed 's/\..*//')
-    timestamp=$(echo "$fecha_limpia" | sed 's/^"//;s/"$//')
+    timestamp=$(echo "$line" | awk -F',' '{print $12}' | sed 's/^"//;s/"$//' | sed 's/T/ /' | sed 's/\..*//') 
 
     # Verificar que el ID no esté vacío
-
     if [ -z "$id_transaccion" ]; then
         echo "Error: ID de transacción vacío" | tee -a "$LOG_DIA"
         FACTURAS_ERR=$((FACTURAS_ERR+1))
@@ -92,12 +75,10 @@ while read line; do
     # Campos especiales
     # Para modalidad_pago también usamos {pago}
     sed -i "s|{pago}|$modalidad_pago|g" "$TEX"
-    sed -i "s|{fecha_emision}|$fecha_limpia|g" "$TEX"
+    sed -i "s|{fecha_emision}|$timestamp|g" "$TEX"
 
     # Agregar observaciones por defecto
     sed -i "s|{observaciones}|Factura generada automáticamente|g" "$TEX"
-
-    echo "Archivo generado: $TEX"
 
     PDF_FILE="$PDF_DIR/$id_transaccion.pdf"
     LOG_FILE="$LOGS_DIR/$id_transaccion.log"
