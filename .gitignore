@@ -24,5 +24,17 @@ venv/
 # Jupyter Notebook
 .ipynb_checkpoints
 
-/pdf/*.aux
-/pdf/*.out
+# bills
+bills/*.csv
+
+# temporary files
+templates/*.tex
+!templates/template.tex
+
+# Pdf files
+pdf/*.aux
+pdf/*.out
+pdf/*.pdf
+
+# Logs
+logs/*.log

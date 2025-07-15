@@ -5,11 +5,16 @@ TEMPLATE="templates/template.tex"
 OUTPUT_DIR="templates"
 HOY=$(date +%Y%m%d)
 CSV="bills/${HOY}.csv"
-# Procesar cada línea del CSV (excepto la primera)
+
 # Crear directorios si no existen
 PDF_DIR="pdf"
 LOGS_DIR="logs"
 mkdir -p "$PDF_DIR" "$LOGS_DIR"
+
+# Log diario
+LOG_DIA="$LOGS_DIR/log-diario-${HOY}.log"
+FACTURAS_OK=0
+FACTURAS_ERR=0
 
 # Verificar si existe el archivo CSV
 if [ ! -f "$CSV" ]; then
@@ -19,7 +24,7 @@ fi
 
 echo "Procesando archivo: $CSV"
 
-tail -n +2 "$CSV" | while read line; do
+while read line; do
 
     # Usar awk para separar las columnas
     id_transaccion=$(echo "$line" | awk -F',' '{print $1}')
@@ -53,8 +58,10 @@ tail -n +2 "$CSV" | while read line; do
     timestamp=$(echo "$fecha_limpia" | sed 's/^"//;s/"$//')
 
     # Verificar que el ID no esté vacío
+
     if [ -z "$id_transaccion" ]; then
-        echo "Error: ID de transacción vacío"
+        echo "Error: ID de transacción vacío" | tee -a "$LOG_DIA"
+        FACTURAS_ERR=$((FACTURAS_ERR+1))
         continue
     fi
 
@@ -97,11 +104,26 @@ tail -n +2 "$CSV" | while read line; do
     rm -f "$PDF_DIR/$id_transaccion.aux"
     rm -f "$PDF_DIR/$id_transaccion.out"
     if [ $? -eq 0 ]; then
-        echo "PDF generado: $PDF_FILE"
-        echo "Log: $LOG_FILE"
+        echo "------------------------------" >> "$LOG_DIA"
+        echo "ID: $id_transaccion" >> "$LOG_DIA"
+        echo "PDF generado: $PDF_FILE" >> "$LOG_DIA"
+        echo "Log: $LOG_FILE" >> "$LOG_DIA"
+        FACTURAS_OK=$((FACTURAS_OK+1))
     else
-        echo "Error al generar PDF para $TEX. Ver $LOG_FILE"
+        echo "Error al generar PDF para $TEX. Ver $LOG_FILE" | tee -a "$LOG_DIA"
+        FACTURAS_ERR=$((FACTURAS_ERR+1))
     fi
-done
+done < <(tail -n +2 "$CSV")
+
 
 echo "Proceso completado"
+
+# Resumir resultados al final del log diario
+echo "      " >> "$LOG_DIA"
+echo "-----------RESUMEN------------" >> "$LOG_DIA"
+echo "Facturas generadas exitosamente: $FACTURAS_OK" >> "$LOG_DIA"
+echo "Facturas con error: $FACTURAS_ERR" >> "$LOG_DIA"
+echo "-----------RESUMEN------------" >> "$LOG_DIA"
+
+echo "Facturas generadas exitosamente: $FACTURAS_OK"
+echo "Facturas con error: $FACTURAS_ERR"
