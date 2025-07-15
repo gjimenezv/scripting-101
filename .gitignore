@@ -32,9 +32,10 @@ templates/*.tex
 !templates/template.tex
 
 # Pdf files
-pdf/*.aux
-pdf/*.out
-pdf/*.pdf
+pdf/**
 
 # Logs
 logs/*.log
+
+# Cron jobs
+cron/*.csv

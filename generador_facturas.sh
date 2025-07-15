@@ -3,15 +3,17 @@
 # Archivos y directorios
 TEMPLATE="templates/template.tex"
 OUTPUT_DIR="templates"
-HOY=$(date +%Y%m%d)
-CSV="bills/${HOY}.csv"
-
-# Crear directorios si no existen
 PDF_DIR="pdf"
 LOGS_DIR="logs"
-mkdir -p "$PDF_DIR" "$LOGS_DIR"
+CRON_DIR="cron"
+HOY=$(date +%Y%m%d)
+CSV="bills/${HOY}.csv"
+# Archivo de pendientes de envío en carpeta cron
+PENDIENTES_FILE="$CRON_DIR/pendientes_envio.csv"
+# Limpiar o crear el archivo pendientes_envio.csv al inicio
+echo -n > "$PENDIENTES_FILE"
 
-# Log diario
+# Log diario5
 LOG_DIA="$LOGS_DIR/log-diario-${HOY}.log"
 FACTURAS_OK=0
 FACTURAS_ERR=0
@@ -94,27 +96,32 @@ while read line; do
 
     echo "Archivo generado: $TEX"
 
-    # Generar PDF con pdflatex (salida en PDF_DIR, logs en LOGS_DIR)
     PDF_FILE="$PDF_DIR/$id_transaccion.pdf"
     LOG_FILE="$LOGS_DIR/$id_transaccion.log"
-    # Cambiar a LOGS_DIR para ejecutar pdflatex y evitar logs en PDF_DIR
+    
+    # Generar PDF en la carpeta correspondiente (sin log individual)
     pdflatex -output-directory="$PDF_DIR" "$TEX" >"$LOG_FILE" 2>&1
-    # Eliminar el archivo .log generado por pdflatex en PDF_DIR
+    # Ejecutar de nuevo para generar numero de paginas 
+    pdflatex -output-directory="$PDF_DIR" "$TEX" >"$LOG_FILE" 2>&1
+    
+    # Limpiar archivos temporales
     rm -f "$PDF_DIR/$id_transaccion.log"
     rm -f "$PDF_DIR/$id_transaccion.aux"
     rm -f "$PDF_DIR/$id_transaccion.out"
+
     if [ $? -eq 0 ]; then
         echo "------------------------------" >> "$LOG_DIA"
         echo "ID: $id_transaccion" >> "$LOG_DIA"
         echo "PDF generado: $PDF_FILE" >> "$LOG_DIA"
         echo "Log: $LOG_FILE" >> "$LOG_DIA"
         FACTURAS_OK=$((FACTURAS_OK+1))
+        # Agregar a pendientes_envio.csv: [id].pdf,[correo] en carpeta cron
+        echo "${id_transaccion}.pdf,${correo}" >> "$PENDIENTES_FILE"
     else
-        echo "Error al generar PDF para $TEX. Ver $LOG_FILE" | tee -a "$LOG_DIA"
+        echo "Error al generar PDF para $TEX." | tee -a "$LOG_DIA"
         FACTURAS_ERR=$((FACTURAS_ERR+1))
     fi
 done < <(tail -n +2 "$CSV")
-
 
 echo "Proceso completado"
 
