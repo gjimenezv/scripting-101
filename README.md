@@ -71,7 +71,8 @@ sudo apt install texlive-latex-base texlive-latex-extra -y
     ```
 
 3. **Generate Invoices:**  
-    Run `generador_facturas.sh` to generate a `templates/[id_transaccion].tex` file for each bill (row) in the CSV file `bills/[date].csv`, using `template.tex` as a base and replacing the relevant values.
+    Run `generador_facturas.sh` to generate a `templates/[id_transaccion].tex` file for each bill (row) in the CSV file `bills/[date].csv`, using `template.tex` as a base and replacing the relevant values. This script also generates a log file for each bill inside the `logs` folder, as well as a PDF for each bill inside the `pdf` folder.
+
     ```bash
     ./generador_facturas.sh
     ```
