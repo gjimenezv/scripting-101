@@ -8,13 +8,16 @@ LOGS_DIR="logs"
 CRON_DIR="cron"
 HOY=$(date +%Y%m%d)
 CSV="bills/${HOY}.csv"
+# Log diario
+LOG_DIA="$LOGS_DIR/log-diario-${HOY}.log"
+# Limpiar o crear el archivo de log diario al inicio
+echo -n > "$LOG_DIA"
 # Archivo de pendientes de envío en carpeta cron
 PENDIENTES_FILE="$CRON_DIR/pendientes_envio.csv"
 # Limpiar o crear el archivo pendientes_envio.csv al inicio
 echo -n > "$PENDIENTES_FILE"
 
-# Log diario5
-LOG_DIA="$LOGS_DIR/log-diario-${HOY}.log"
+# Contadores para el resumen
 FACTURAS_OK=0
 FACTURAS_ERR=0
 
@@ -121,7 +124,7 @@ while read line; do
         echo "Error al generar PDF para $TEX." | tee -a "$LOG_DIA"
         FACTURAS_ERR=$((FACTURAS_ERR+1))
     fi
-done < <(tail -n +2 "$CSV")
+done < <(awk 'NR>1' "$CSV")
 
 echo "Proceso completado"
 
@@ -132,5 +135,8 @@ echo "Facturas generadas exitosamente: $FACTURAS_OK" >> "$LOG_DIA"
 echo "Facturas con error: $FACTURAS_ERR" >> "$LOG_DIA"
 echo "-----------RESUMEN------------" >> "$LOG_DIA"
 
+# Imprimir resumen en consola
+echo "-----------RESUMEN------------"
 echo "Facturas generadas exitosamente: $FACTURAS_OK"
 echo "Facturas con error: $FACTURAS_ERR"
+echo "-----------RESUMEN------------"
