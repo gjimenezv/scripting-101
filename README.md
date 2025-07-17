@@ -61,7 +61,7 @@ sudo apt install texlive-latex-base texlive-latex-extra -y
 1. **Generate Purchases CSV:**  
     Run `generador_compras.py` to create a new file in `bills/[date].csv` containing 1 to 10 randomly generated bills using the Faker package.
     ```bash
-    python3 generador_compras.py
+    python generador_compras.py
     ```
 
 2. **Set Script Permissions:**  
@@ -76,3 +76,22 @@ sudo apt install texlive-latex-base texlive-latex-extra -y
     ```bash
     ./generador_facturas.sh
     ```
+
+4. **Run an SMTP server locally**  
+    Run the MailHog image locally on port 1025 (Docker installation required):  
+    ```bash
+    docker run -d --name mailhog -p 1025:1025 -p 8025:8025 mailhog/mailhog
+    ```
+    You can access the MailHog web interface at http://localhost:8025 to view sent emails.
+    You can also enable Jim, MailHog’s built-in filtering tool, to reject specific senders and recipients.
+   
+5. **Send invoices**  
+    ```bash
+    python enviador.py
+    ```
+    Run `enviador.py` to read email addresses and PDF attachments from `cron/pendientes_envio.csv`.  
+    The script will process each row and send an email with the corresponding attachment.  
+    You can review the sent emails in the MailHog web interface.
+
+
+

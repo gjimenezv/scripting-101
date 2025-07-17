@@ -81,7 +81,7 @@ while read line; do
     sed -i "s|{observaciones}|Factura generada automáticamente|g" "$TEX"
 
     PDF_FILE="$PDF_DIR/$id_transaccion.pdf"
-    LOG_FILE="$LOGS_DIR/$id_transaccion.log"
+    LOG_FILE="$LOGS_DIR/pdflatex-$id_transaccion.log"
     
     # Generar PDF en la carpeta correspondiente (sin log individual)
     pdflatex -output-directory="$PDF_DIR" "$TEX" >"$LOG_FILE" 2>&1
