@@ -80,7 +80,7 @@ sudo apt install texlive-latex-base texlive-latex-extra -y
 4. **Run an SMTP server locally**  
     Run the MailHog image locally on port 1025 (Docker installation required):  
     ```bash
-    docker run -d --name mailhog -p 1025:1025 -p 8025:8025 mailhog/mailhog
+    sudo docker run -d -p 1025:1025 -p 8025:8025 mailhog/mailhog
     ```
     You can access the MailHog web interface at http://localhost:8025 to view sent emails.
     You can also enable Jim, MailHog’s built-in filtering tool, to reject specific senders and recipients.
@@ -89,8 +89,9 @@ sudo apt install texlive-latex-base texlive-latex-extra -y
     ```bash
     python enviador.py
     ```
-    Run `enviador.py` to read email addresses and PDF attachments from `cron/pendientes_envio.csv`.  
-    The script will process each row and send an email with the corresponding attachment.  
+    Run `enviador.py` to read email addresses and PDF attachments from cron/pendientes_envio.csv.
+    The script will process each row and send an email with the corresponding attachment.
+    It will generate a log file in `logs/log_envios.csv` to track whether the email was sent successfully or not.
     You can review the sent emails in the MailHog web interface.
 
 

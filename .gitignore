@@ -36,6 +36,7 @@ pdf/**
 
 # Logs
 logs/*.log
+logs/*.csv
 
 # Cron jobs
 cron/*.csv

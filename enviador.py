@@ -18,9 +18,17 @@ CSV_PATH = os.path.join(BASE_DIR, "cron", "pendientes_envio.csv")
 PDF_DIR = os.path.join(BASE_DIR, "pdf")
 # Ruta de los logs
 LOGS_DIR = os.path.join(BASE_DIR, "logs")
+# Resumento de envíos
+LOG_ENVIO_CSV = os.path.join(LOGS_DIR, "log_envios.csv")
 
 # Regex para validar correos
 EMAIL_REGEX = re.compile(r"^[\w\.-]+@[\w\.-]+\.\w+$")
+
+def registrar_log_envio(nombre_pdf, correo, estado):
+    with open(LOG_ENVIO_CSV, "a", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow([nombre_pdf, correo, estado])
+
 
 # Función para enviar el correo
 def enviar_correo(destinatario, archivo_pdf):
@@ -60,7 +68,7 @@ def procesar_envios():
             pdf, correo = linea[0].strip(), linea[1].strip()
             pdf_path = os.path.join(PDF_DIR, pdf)
 
-            log_filename = f"send-{os.path.basename(pdf)}.attempt-1.log"
+            log_filename = f"send-{os.path.basename(pdf)}-attempt-1.log"
             log_path = os.path.join(LOGS_DIR, log_filename)
 
             if not EMAIL_REGEX.match(correo):
@@ -76,10 +84,13 @@ def procesar_envios():
                 with open(log_path, "w") as log:
                     log.write(f"Correo enviado exitosamente a {correo} con el archivo {pdf}\n")
                 exitosos.append(linea)
+                registrar_log_envio(pdf, correo, "exitoso")
             except Exception as e:
                 with open(log_path, "w") as log:
                     log.write(f"Error enviando correo a {correo}: {str(e)}\n")
                 pendientes.append(linea)
+                registrar_log_envio(pdf, correo, "fallido")
+
 
     # Escribir las líneas no exitosas de nuevo en el CSV limpiando el contenido
     with open(CSV_PATH, "w", newline="", encoding="utf-8") as archivo_csv:
