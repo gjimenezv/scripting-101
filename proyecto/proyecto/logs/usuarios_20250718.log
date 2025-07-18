@@ -1,0 +1,25 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20250718111417
+Username: DESKTOP-UUKGDJ1\p4tr1c10
+RunAs User: DESKTOP-UUKGDJ1\p4tr1c10
+Configuration Name: 
+Machine: DESKTOP-UUKGDJ1 (Microsoft Windows NT 10.0.22631.0)
+Host Application: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+Process ID: 12040
+PSVersion: 5.1.22621.5624
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.22621.5624
+BuildVersion: 10.0.22621.5624
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is C:\Users\p4tr1c10\Desktop\proyecto\scripts\..\logs\usuarios_20250718.log
+=== INICIO DE PROCESO: 2025-07-18 11:14:17 ===
+
+**********************
+Windows PowerShell transcript end
+End time: 20250718111417
+**********************
