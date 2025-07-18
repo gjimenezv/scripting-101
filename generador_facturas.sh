@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Archivos y directorios
-TEMPLATE="templates/template.tex"
+TEMPLATE="templates/plantilla_factura.tex"
 OUTPUT_DIR="templates"
 PDF_DIR="pdf"
 LOGS_DIR="logs"
@@ -9,7 +9,7 @@ CRON_DIR="cron"
 HOY=$(date +%Y%m%d)
 CSV="bills/${HOY}.csv"
 # Log diario
-LOG_DIA="$LOGS_DIR/log-diario-${HOY}.log"
+LOG_DIA="$LOGS_DIR/log-diario.log"
 # Limpiar o crear el archivo de log diario al inicio
 echo -n > "$LOG_DIA"
 # Archivo de pendientes de envío en carpeta cron
@@ -18,6 +18,12 @@ PENDIENTES_FILE="$CRON_DIR/pendientes_envio.csv"
 echo -n > "$PENDIENTES_FILE"
 
 # Contadores para el resumen
+FACTURAS_TOTAL=0
+FACTURAS_ESTADO_EXITOSO=0
+FACTURAS_ESTADO_FALLIDO=0
+FACTURAS_PAGO_COMPLETO=0
+FACTURAS_PAGO_FRACCIONADO=0
+FACTURAS_MONTO_TOTAL=0
 FACTURAS_OK=0
 FACTURAS_ERR=0
 
@@ -46,6 +52,7 @@ while read line; do
     # Para timestamp convertimos a fecha legible
     timestamp=$(echo "$line" | awk -F',' '{print $12}' | sed 's/^"//;s/"$//' | sed 's/T/ /' | sed 's/\..*//') 
 
+
     # Verificar que el ID no esté vacío
     if [ -z "$id_transaccion" ]; then
         echo "Error: ID de transacción vacío" | tee -a "$LOG_DIA"
@@ -53,7 +60,22 @@ while read line; do
         continue
     fi
 
-    echo "Procesando: $id_transaccion"
+    FACTURAS_TOTAL=$((FACTURAS_TOTAL+1))
+
+    if [ "$estado_pago" != "exitoso" ]; then
+        FACTURAS_ESTADO_FALLIDO=$((FACTURAS_ESTADO_FALLIDO+1))
+        continue
+    fi
+
+    FACTURAS_ESTADO_EXITOSO=$((FACTURAS_ESTADO_EXITOSO+1))
+
+    if [ "$modalidad_pago" == "completo" ]; then
+        FACTURAS_PAGO_COMPLETO=$((FACTURAS_PAGO_COMPLETO+1))
+    elif [ "$modalidad_pago" == "fraccionado" ]; then
+        FACTURAS_PAGO_FRACCIONADO=$((FACTURAS_PAGO_FRACCIONADO+1))
+    fi
+
+    FACTURAS_MONTO_TOTAL=$(echo "$FACTURAS_MONTO_TOTAL + $monto" | bc)
 
     # Crear el archivo .tex copiando el template
     TEX="$OUTPUT_DIR/$id_transaccion.tex"
@@ -94,10 +116,6 @@ while read line; do
     rm -f "$PDF_DIR/$id_transaccion.out"
 
     if [ $? -eq 0 ]; then
-        echo "------------------------------" >> "$LOG_DIA"
-        echo "ID: $id_transaccion" >> "$LOG_DIA"
-        echo "PDF generado: $PDF_FILE" >> "$LOG_DIA"
-        echo "Log: $LOG_FILE" >> "$LOG_DIA"
         FACTURAS_OK=$((FACTURAS_OK+1))
         # Agregar a pendientes_envio.csv: [id].pdf,[correo] en carpeta cron
         echo "${id_transaccion}.pdf,${correo}" >> "$PENDIENTES_FILE"
@@ -110,14 +128,14 @@ done < <(awk 'NR>1' "$CSV")
 echo "Proceso completado"
 
 # Resumir resultados al final del log diario
-echo "      " >> "$LOG_DIA"
 echo "-----------RESUMEN------------" >> "$LOG_DIA"
+echo "Total de facturas: $FACTURAS_TOTAL" >> "$LOG_DIA"
+echo "Facturas con estado exitoso: $FACTURAS_ESTADO_EXITOSO" >> "$LOG_DIA"
+echo "Facturas con estado fallido: $FACTURAS_ESTADO_FALLIDO" >> "$LOG_DIA"
+echo "Monto total facturado: $FACTURAS_MONTO_TOTAL" >> "$LOG_DIA"
+echo "Facturas pagados en su totalidad: $FACTURAS_PAGO_COMPLETO" >> "$LOG_DIA"
+echo "Facturas pagados parcialmente: $FACTURAS_PAGO_FRACCIONADO">> "$LOG_DIA"
 echo "Facturas generadas exitosamente: $FACTURAS_OK" >> "$LOG_DIA"
 echo "Facturas con error: $FACTURAS_ERR" >> "$LOG_DIA"
+echo "Fecha y hora de ejecución: $(date)" >> "$LOG_DIA"
 echo "-----------RESUMEN------------" >> "$LOG_DIA"
-
-# Imprimir resumen en consola
-echo "-----------RESUMEN------------"
-echo "Facturas generadas exitosamente: $FACTURAS_OK"
-echo "Facturas con error: $FACTURAS_ERR"
-echo "-----------RESUMEN------------"
