@@ -29,7 +29,7 @@ bills/*.csv
 
 # temporary files
 templates/*.tex
-!templates/template.tex
+!templates/plantilla_factura.tex
 
 # Pdf files
 pdf/**
