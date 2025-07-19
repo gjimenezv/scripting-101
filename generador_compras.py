@@ -6,9 +6,7 @@ import time
 
 fake = Faker('es_MX')
 
-def generar_compras(num_transacciones=5):
-    hoy = datetime.now().strftime('%Y%m%d')
-    nombre_archivo = f'bills/{hoy}.csv'
+def generar_compras(num_transacciones=5, nombre_archivo='bills/20250719.csv'):
     
     with open(nombre_archivo, 'w', newline='') as csvfile:
         campos = ['id_transaccion','nombre', 'ciudad', 'direccion', 'correo', 'telefono', 
@@ -54,4 +52,8 @@ def generar_compras(num_transacciones=5):
 
 if __name__ == '__main__':
     num_transacciones = random.randint(1, 10)
-    generar_compras(num_transacciones)
+    print(f"Generando {num_transacciones} transacciones de compras...")
+    hoy = datetime.now().strftime('%Y%m%d')
+    nombre_archivo = f'bills/{hoy}.csv'
+    generar_compras(num_transacciones,nombre_archivo)
+    print(f"Archivo generado: {nombre_archivo}")

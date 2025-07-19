@@ -31,10 +31,11 @@ def enviar_correo(destinatario, archivo_log):
         contenido_log = f.read()
         mensaje.set_content("Resumen de envíos del sistema de facturación electrónica de Soluciones Ficticias\n" + contenido_log.decode('utf-8'))
     
+    if os.path.exists(CRON_LOG):
     # Adjuntar el archivo de log del cron
-    with open(CRON_LOG, "rb") as l:
-        contenido_log = l.read()
-        mensaje.add_attachment(contenido_log, maintype="application", subtype="txt", filename=os.path.basename(CRON_LOG))
+        with open(CRON_LOG, "rb") as l:
+            contenido_log = l.read()
+            mensaje.add_attachment(contenido_log, maintype="application", subtype="txt", filename=os.path.basename(CRON_LOG))
     
     # aca usamos una version simplificada para enviar el correo con el servidor SMTP local
     # esto por cuestion de pruebas y tambien que los correos generados son ficticios normalmete fallarian

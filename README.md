@@ -1,98 +1,158 @@
-# scripting-101
+# Scripting-101
 
-This repository contains the code required for the IRSI certification scripting project.
+This repository contains the code required for the IRSI certification scripting project. The system automates the generation, processing, and distribution of invoices through a complete pipeline.
 
-## Setup
+## Table of Contents
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Project Structure](#project-structure)
+- [Usage](#usage)
+- [Automated Workflow](#automated-workflow)
+- [Manual Execution](#manual-execution)
 
-### Install
+## Prerequisites
 
-Set up a Python virtual environment to isolate the required dependencies.
+- Python 3.6 or higher
+- Docker (for local SMTP server)
+- LaTeX distribution (for PDF generation)
 
-**Linux/macOS**
+## Installation
+
+### 1. Set Up Python Virtual Environment
+
+**Linux/macOS:**
 ```bash
 sudo apt install python3-venv
 ```
 
-**Windows**  
+**Windows:**
 Download and install Python from [python.org](https://www.python.org/downloads/windows/).
 
-### Create Virtual Environment
+### 2. Create and Activate Virtual Environment
 
-Create a virtual environment for the project dependencies.
+**Create virtual environment:**
 
-**Linux/macOS**
+*Linux/macOS:*
 ```bash
 python3 -m venv venv
 ```
 
-**Windows**
+*Windows:*
 ```bash
 python -m venv venv
 ```
 
-### Activate the Environment
+**Activate virtual environment:**
 
-**Linux/macOS**
+*Linux/macOS:*
 ```bash
 source venv/bin/activate
 ```
 
-**Windows**
+*Windows:*
 ```bash
 venv\Scripts\activate
 ```
 
-### Install Dependencies
+### 3. Install Dependencies
 
-Install the required Python packages:
-
+**Install Python packages:**
 ```bash
 pip install -r requirements.txt
 ```
 
-Install the `pdflatex` dependencies:
-
+**Install LaTeX dependencies (Linux/macOS):**
 ```bash
 sudo apt install texlive-latex-base texlive-latex-extra -y
 ```
 
-## How to Run
+## Project Structure
 
-1. **Generate Purchases CSV:**  
-    Run `generador_compras.py` to create a new file in `bills/[date].csv` containing 1 to 10 randomly generated bills using the Faker package.
-    ```bash
-    python generador_compras.py
-    ```
+```
+scripting-101/
+├── bills/                    # Generated CSV files with purchase data
+├── templates/                # LaTeX templates for invoices
+├── pdf/                      # Generated PDF invoices
+├── logs/                     # Log files and processing records
+├── cron/                     # Files for automated processing
+├── generador_compras.py      # Purchase data generator
+├── generador_facturas.sh     # Invoice generation script
+├── enviador.py              # Email sender script
+├── enviador-resumen.py      # Summary email sender
+├── generador_resumen.sh     # Summary generation script
+├── cron_job.sh              # Automated workflow script
+└── requirements.txt         # Python dependencies
+```
 
-2. **Set Script Permissions:**  
-    Grant execution permissions to the shell script (run this only once).
-    ```bash
-    sudo chmod u+x generador_facturas.sh
-    ```
+## Usage
 
-3. **Generate Invoices:**  
-    Run `generador_facturas.sh` to generate a `templates/[id_transaccion].tex` file for each bill (row) in the CSV file `bills/[date].csv`, using `plantilla_factura.tex` as a base and replacing the relevant values. This script also generates a log file for each bill inside the `logs` folder, as well as a PDF for each bill inside the `pdf` folder. Additionally, the script creates a `cron/pendientes_envio.csv` file containing the PDF file and corresponding email address, which is used by another script (run as a cron job) to send an email with the PDF attached.
+### Automated Workflow
 
-    ```bash
-    ./generador_facturas.sh
-    ```
+The entire invoice processing pipeline can be automated using the cron job script:
 
-4. **Run an SMTP server locally**  
-    Run the MailHog image locally on port 1025 (Docker installation required):  
-    ```bash
-    sudo docker run -d -p 1025:1025 -p 8025:8025 mailhog/mailhog
-    ```
-    You can access the MailHog web interface at http://localhost:8025 to view sent emails.
-    You can also enable Jim, MailHog’s built-in filtering tool, to reject specific senders and recipients.
-   
-5. **Send invoices**  
-    ```bash
-    python enviador.py
-    ```
-    Run `enviador.py` to read email addresses and PDF attachments from cron/pendientes_envio.csv.
-    The script will process each row and send an email with the corresponding attachment.
-    It will generate a log file in `logs/log_envios.csv` to track whether the email was sent successfully or not.
-    You can review the sent emails in the MailHog web interface.
+```bash
+./cron_job.sh
+```
 
+This single command executes all processing steps automatically.
 
+### Manual Execution
 
+For step-by-step manual execution or testing individual components:
+
+#### Step 1: Generate Purchase Data
+```bash
+python generador_compras.py
+```
+Creates a CSV file in `bills/[date].csv` containing 1-10 randomly generated bills using the Faker package.
+
+#### Step 2: Set Script Permissions (One-time setup)
+```bash
+sudo chmod u+x generador_facturas.sh
+```
+
+#### Step 3: Generate Invoices
+```bash
+./generador_facturas.sh
+```
+This script:
+- Generates `templates/[id_transaccion].tex` files for each bill using `plantilla_factura.tex` as a template
+- Creates log files in the `logs` folder for each processed bill
+- Generates PDF files in the `pdf` folder
+- Creates `cron/pendientes_envio.csv` with email addresses and corresponding PDF files for delivery
+
+#### Step 4: Start Local SMTP Server
+```bash
+sudo docker run -d -p 1025:1025 -p 8025:8025 mailhog/mailhog
+```
+- Access the MailHog web interface at http://localhost:8025 to view sent emails
+- Optional: Enable Jim (MailHog's filtering tool) to reject specific senders and recipients
+
+#### Step 5: Send Invoices
+```bash
+python enviador.py
+```
+- Reads email addresses and PDF attachments from `cron/pendientes_envio.csv`
+- Sends emails with corresponding PDF attachments
+- Generates `logs/log_envios.csv` to track delivery status
+- Review sent emails in the MailHog web interface
+
+#### Step 6: Generate Invoice Summary
+```bash
+./generador_resumen.sh
+```
+Creates a comprehensive summary of all processed invoices and saves it to `logs/resumen-envios.log`.
+
+#### Step 7: Send Summary to Administrator
+```bash
+python enviador-resumen.py
+```
+- Sends the contents of `logs/resumen-envios.log` as the email body
+- Attaches `cron.log` to the administrative email
+
+## Notes
+
+- Ensure all dependencies are properly installed before running the scripts
+- The system uses MailHog for local email testing - check the web interface to verify email delivery
+- Log files are generated throughout the process for monitoring and troubleshooting
+- The automated workflow handles all steps sequentially, making it ideal for scheduled execution
