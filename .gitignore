@@ -40,3 +40,6 @@ logs/*.csv
 
 # Cron jobs
 cron/*.csv
+
+# Flags
+.flag_*_ok

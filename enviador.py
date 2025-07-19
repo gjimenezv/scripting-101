@@ -4,6 +4,7 @@ import re
 import smtplib
 from datetime import datetime
 from email.message import EmailMessage
+import sys
 
 # Parametros de correo
 SMTP_SERVER = "localhost"
@@ -20,6 +21,9 @@ PDF_DIR = os.path.join(BASE_DIR, "pdf")
 LOGS_DIR = os.path.join(BASE_DIR, "logs")
 # Resumento de envíos
 LOG_ENVIO_CSV = os.path.join(LOGS_DIR, "log_envios.csv")
+# Definir los archivos de bandera 
+FLAG_PREV = os.path.join(BASE_DIR, ".flag_generador_facturas_ok")
+FLAG_ME = os.path.join(BASE_DIR, ".flag_enviador_ok")
 
 # Regex para validar correos
 EMAIL_REGEX = re.compile(r"^[\w\.-]+@[\w\.-]+\.\w+$")
@@ -33,7 +37,7 @@ def registrar_log_envio(nombre_pdf, correo, estado):
 # Función para enviar el correo
 def enviar_correo(destinatario, archivo_pdf):
     mensaje = EmailMessage()
-    mensaje["Subject"] = "Soluciones Ficticias - Factura Electr´onica"
+    mensaje["Subject"] = "Soluciones Ficticias - Factura Electronica"
     mensaje["From"] = EMAIL_SENDER
     mensaje["To"] = destinatario
     mensaje.set_content("Adjunto encontrarás el documento solicitado.")
@@ -99,4 +103,18 @@ def procesar_envios():
             escritor.writerow(linea)
 
 if __name__ == "__main__":
+    # Verificar si el archivo de bandera existe, indica que el paso previo (generador de facturas) se ejecutó correctamente
+    if not os.path.exists(FLAG_PREV):
+        print("generador_facturas.sh no terminó o no se ejecutó aún. Saliendo.")
+        sys.exit(0)
+    # Remover el archivo de bandera del paso anterior
+    os.remove(FLAG_PREV)
+    # limpiar log_envios.csv
+    if os.path.exists(LOG_ENVIO_CSV):
+        os.remove(LOG_ENVIO_CSV)
+    # Procesar los envíos
+    print("Procesando envíos...")
     procesar_envios()
+    print("Envíos procesados.")
+    # Crear el archivo de bandera para indicar que este paso se completó correctamente
+    open(FLAG_ME, 'w').close()

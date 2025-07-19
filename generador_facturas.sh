@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Cambia al directorio del script
+# Esto asegura que los archivos relativos se manejen correctamente
+# y que el script se ejecute desde su propia ubicación al usar cron jobs
+cd "$(dirname "$0")"
+
 # Archivos y directorios
 TEMPLATE="templates/plantilla_factura.tex"
 OUTPUT_DIR="templates"
@@ -10,12 +15,16 @@ HOY=$(date +%Y%m%d)
 CSV="bills/${HOY}.csv"
 # Log diario
 LOG_DIA="$LOGS_DIR/log-diario.log"
-# Limpiar o crear el archivo de log diario al inicio
+CRON_LOG="$LOGS_DIR/cron.log"
+# Limpiar o crear el archivo de log diario
 echo -n > "$LOG_DIA"
+# Limpiar o crear el archivo de log del cron
+echo -n > "$CRON_LOG"
 # Archivo de pendientes de envío en carpeta cron
 PENDIENTES_FILE="$CRON_DIR/pendientes_envio.csv"
 # Limpiar o crear el archivo pendientes_envio.csv al inicio
 echo -n > "$PENDIENTES_FILE"
+FLAG_ME=".flag_generador_facturas_ok"
 
 # Contadores para el resumen
 FACTURAS_TOTAL=0
@@ -125,8 +134,6 @@ while read line; do
     fi
 done < <(awk 'NR>1' "$CSV")
 
-echo "Proceso completado"
-
 # Resumir resultados al final del log diario
 echo "-----------RESUMEN------------" >> "$LOG_DIA"
 echo "Total de facturas: $FACTURAS_TOTAL" >> "$LOG_DIA"
@@ -139,3 +146,7 @@ echo "Facturas generadas exitosamente: $FACTURAS_OK" >> "$LOG_DIA"
 echo "Facturas con error: $FACTURAS_ERR" >> "$LOG_DIA"
 echo "Fecha y hora de ejecución: $(date)" >> "$LOG_DIA"
 echo "-----------RESUMEN------------" >> "$LOG_DIA"
+
+echo "Archivo: $CSV procesado correctamente."
+# Si todo salió bien, crea la bandera para indicar éxito
+touch "$FLAG_ME"
