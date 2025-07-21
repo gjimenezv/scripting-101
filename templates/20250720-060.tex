@@ -1,0 +1,83 @@
+
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{color}
+\usepackage{titlesec}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{hyperref}
+\usepackage{tabularx}
+\usepackage{colortbl}
+\usepackage{xcolor}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\textbf{Factura \#20250720-060}}
+\lhead{Soluciones Ficticias}
+\rfoot{Página \thepage\ de \pageref{LastPage}}
+
+\titleformat{\section}{\large\bfseries}{}{0em}{}
+
+\definecolor{lightgray}{gray}{0.9}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\begin{document}
+
+\begin{center}
+    \Huge \textbf{Factura Electrónica}
+
+    \vspace{0.3cm}
+    \large \textbf{Soluciones Ficticias - Sistema Automatizado}
+
+    \vspace{0.5cm}
+    \normalsize Fecha de Emisión: \textbf{2025-07-20 20:59:03} \\
+    ID de Transacción: \textbf{20250720-060} \\
+\end{center}
+
+\vspace{1cm}
+
+\section*{Información del Cliente}
+\begin{tabularx}{\textwidth}{L{4cm} L{12cm}}
+\rowcolor{lightgray}
+\textbf{Campo} & \textbf{Valor} \\
+\hline
+Nombre completo & Sr(a). Gloria Guzmán \\
+Correo electrónico & hector95@example.com \\
+Teléfono & +20(6)8755844759 \\
+Dirección & Retorno Sinaloa 900 148- Vieja Etiopía  CHIS 97118-0841 \\
+Ciudad & Vieja Nigeria \\
+\end{tabularx}
+
+\vspace{0.8cm}
+
+\section*{Detalles de la Compra}
+\begin{tabularx}{\textwidth}{L{6cm} L{10cm}}
+\rowcolor{lightgray}
+\textbf{Concepto} & \textbf{Detalle} \\
+\hline
+Cantidad comprada & 17 \\
+Monto total & ₡4897.07 \\
+Tipo de pago & completo \\
+Estado del pago & exitoso \\
+IP de compra & 45.194.212.114 \\
+Fecha y hora & 2025-07-20 20:59:03 \\
+\end{tabularx}
+
+\vspace{1.5cm}
+
+\section*{Observaciones}
+Factura generada automáticamente
+
+\vfill
+
+\begin{center}
+    \textit{Gracias por su compra.} \\
+    Soluciones Ficticias - www.soluciones.ficticias.com \\
+    Factura generada automáticamente por el sistema.
+\end{center}
+
+\end{document}

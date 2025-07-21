@@ -26,20 +26,27 @@ venv/
 
 # bills
 bills/*.csv
+!bills/20250720.csv
 
 # temporary files
 templates/*.tex
 !templates/plantilla_factura.tex
+!templates/20250720-060.tex
 
 # Pdf files
 pdf/**
+!pdf/20250720-060.pdf
 
 # Logs
 logs/*.log
 logs/*.csv
+!logs/pdflatex-20250720-060.log
+!logs/log_envios.csv
+!logs/resumen-envios.log
+!logs/send-20250720-060.pdf-attempt-1.log
+!logs/log-diario.log
+!logs/cron.log
 
-# Cron jobs
-cron/*.csv
 
 # Flags
 .flag_*_ok

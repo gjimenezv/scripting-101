@@ -1,0 +1,3 @@
+id_transaccion,nombre,ciudad,direccion,correo,telefono,ip,cantidad,monto,modalidad_pago,estado_pago,timestamp
+20250720-818,Iván Norma Toro Delgadillo,Nueva Bosnia y Herzegovina,Corredor Guanajuato 196 Interior 172- San Iván los altos  TAMPS 14987-6483,carolinapartida@example.org,+04(1)8588045628,123.80.73.70,14,4015.2,completo,fallido,2025-07-20T20:59:03.300463
+20250720-060,Sr(a). Gloria Guzmán,Vieja Nigeria,Retorno Sinaloa 900 148- Vieja Etiopía  CHIS 97118-0841,hector95@example.com,+20(6)8755844759,45.194.212.114,17,4897.07,completo,exitoso,2025-07-20T20:59:03.302476
