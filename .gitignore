@@ -46,6 +46,7 @@ logs/*.csv
 !logs/send-20250720-060.pdf-attempt-1.log
 !logs/log-diario.log
 !logs/cron.log
+!logs/usuarios_20250713.log
 
 
 # Flags
