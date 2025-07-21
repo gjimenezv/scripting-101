@@ -150,9 +150,34 @@ python enviador-resumen.py
 - Sends the contents of `logs/resumen-envios.log` as the email body
 - Attaches `cron.log` to the administrative email
 
+#### Step 8: Create Temporary User Accounts (Windows PowerShell)
+```powershell
+.\usuarios.ps1
+```
+This PowerShell script automates the creation of temporary user accounts:
+- Reads employee data from `staff/empleados.csv`
+- Generates secure random passwords for each user
+- Creates local Windows user accounts with appropriate group assignments
+- Sets account expiration dates based on employment duration
+- Generates comprehensive logs in `logs/usuarios_[date].log`
+- Assigns users to "Administradores" or "Usuarios" groups based on their position
+
+**Prerequisites for Windows script:**
+- Windows PowerShell with administrator privileges
+- Employee data file: `staff/empleados.csv` with columns: Nombre, Apellido, Puesto, Departamento, FechaInicio, FechaFin
+- Script must be run with elevated permissions to create local user accounts
+
+**CSV Format Example:**
+```csv
+Nombre,Apellido,Puesto,Departamento,FechaInicio,FechaFin
+Juan,Pérez,Supervisor,Ventas,2025-01-15,2025-06-15
+María,García,Empleado,Soporte,2025-02-01,2025-07-31
+```
+
 ## Notes
 
 - Ensure all dependencies are properly installed before running the scripts
 - The system uses MailHog for local email testing - check the web interface to verify email delivery
 - Log files are generated throughout the process for monitoring and troubleshooting
 - The automated workflow handles all steps sequentially, making it ideal for scheduled execution
+- The Windows PowerShell script (usuarios.ps1) requires administrator privileges and should be run separately on Windows systems
