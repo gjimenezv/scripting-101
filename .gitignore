@@ -31,19 +31,27 @@ bills/*.csv
 # temporary files
 templates/*.tex
 !templates/plantilla_factura.tex
-!templates/20250720-060.tex
+!templates/20250720-456.tex
+!templates/20250720-620.tex
+!templates/20250720-690.tex
 
 # Pdf files
 pdf/**
-!pdf/20250720-060.pdf
+!pdf/20250720-456.pdf
+!pdf/20250720-620.pdf
+!pdf/20250720-690.pdf
 
 # Logs
 logs/*.log
 logs/*.csv
-!logs/pdflatex-20250720-060.log
+!logs/pdflatex-20250720-456.log
+!logs/pdflatex-20250720-620.log
+!logs/pdflatex-20250720-690.log
 !logs/log_envios.csv
 !logs/resumen-envios.log
-!logs/send-20250720-060.pdf-attempt-1.log
+!logs/send-20250720-456.pdf-attempt-1.log
+!logs/send-20250720-620.pdf-attempt-1.log
+!logs/send-20250720-690.pdf-attempt-1.log
 !logs/log-diario.log
 !logs/cron.log
 !logs/usuarios_20250713.log

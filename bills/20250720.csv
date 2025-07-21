@@ -1,3 +1,6 @@
 id_transaccion,nombre,ciudad,direccion,correo,telefono,ip,cantidad,monto,modalidad_pago,estado_pago,timestamp
-20250720-818,Iván Norma Toro Delgadillo,Nueva Bosnia y Herzegovina,Corredor Guanajuato 196 Interior 172- San Iván los altos  TAMPS 14987-6483,carolinapartida@example.org,+04(1)8588045628,123.80.73.70,14,4015.2,completo,fallido,2025-07-20T20:59:03.300463
-20250720-060,Sr(a). Gloria Guzmán,Vieja Nigeria,Retorno Sinaloa 900 148- Vieja Etiopía  CHIS 97118-0841,hector95@example.com,+20(6)8755844759,45.194.212.114,17,4897.07,completo,exitoso,2025-07-20T20:59:03.302476
+20250720-690,Cristina Ramos,San Olivia los bajos,Boulevard Chipre 382 020- Nueva San Marino  BCS 95104-6692,abregodebora@example.net,301.083.4514,216.242.202.221,4,4940.28,fraccionado,exitoso,2025-07-20T21:37:29.892204
+20250720-620,Karla Bueno de la O,Nueva Grecia,Pasaje Saavedra 778 Edif. 070   Depto. 282- Nueva San Vicente y las Granadinas  COAH 68577,czedillo@example.net,(380)586-0079,52.96.163.215,16,3323.05,completo,exitoso,2025-07-20T21:37:29.892849
+20250720-456,Alta  Gracia Esther Gómez,Vieja Egipto,Calzada Uruguay 059 Interior 156- San Juana de la Montaña  COAH 67071,ayalazoe@example.org,1-172-900-4467x44532,167.193.34.175,14,754.71,fraccionado,exitoso,2025-07-20T21:37:29.893337
+20250720-469,Sonia Óscar Alcántar,San Micaela los bajos,Continuación Michoacán de Ocampo 373 Edif. 762   Depto. 806- Vieja Ucrania  Q. ROO 79754,maria-eugenia64@example.net,272-440-2138x204,90.180.237.133,4,2042.45,completo,fallido,2025-07-20T21:37:29.893809
+20250720-243,Virginia Rosales Lucero,Nueva Arabia Saudita,Retorno Sur Nájera 276 Interior 107- San Mariano los altos  PUE 65262-9921,bfarias@example.net,1-814-707-8423x4920,219.210.200.160,7,3181.11,completo,fallido,2025-07-20T21:37:29.894251

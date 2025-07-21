@@ -1,7 +1,7 @@
 This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex)
  restricted \write18 enabled.
 entering extended mode
-(./templates/20250720-060.tex
+(./templates/20250720-456.tex
 LaTeX2e <2021-11-15> patch level 1
 L3 programming layer <2022-01-21>
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
@@ -53,7 +53,7 @@ Document Class: article 2021/10/04 v1.4n Standard LaTeX document class
 (/usr/share/texlive/texmf-dist/tex/latex/xcolor/xcolor.sty
 (/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg))
 (/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def)
-(pdf/20250720-060.aux)
+(pdf/20250720-456.aux)
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
@@ -63,7 +63,7 @@ Document Class: article 2021/10/04 v1.4n Standard LaTeX document class
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 (/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty)
 (/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty))
-(pdf/20250720-060.out) (pdf/20250720-060.out)
+(pdf/20250720-456.out) (pdf/20250720-456.out)
 Overfull \hbox (7.21284pt too wide) in alignment at lines 53--53
 [][] 
 
@@ -79,11 +79,11 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 (fancyhdr)                \addtolength{\topmargin}{-2.49998pt}.
 
-[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (pdf/20250720-060.aux) )
+[1{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (pdf/20250720-456.aux) )
 (see the transcript file for additional information) </home/asd/.texlive2021/te
 xmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1200.600pk></usr/share/texlive/texmf-di
 st/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texlive/texmf-dist/fon
 ts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type
 1/public/amsfonts/cm/cmti12.pfb>
-Output written on pdf/20250720-060.pdf (1 page, 46142 bytes).
-Transcript written on pdf/20250720-060.log.
+Output written on pdf/20250720-456.pdf (1 page, 46301 bytes).
+Transcript written on pdf/20250720-456.log.
