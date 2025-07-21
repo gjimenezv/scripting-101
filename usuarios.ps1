@@ -6,13 +6,13 @@
 #>
 
 # Configuración
-$RutaCSV = Join-Path $PSScriptRoot "..\data\empleados.csv"
-$LogFile = Join-Path $PSScriptRoot "..\logs\usuarios_$(Get-Date -Format 'yyyyMMdd').log"
+$RutaCSV = Join-Path $PSScriptRoot ".\staff\empleados.csv"
+$LogFile = Join-Path $PSScriptRoot ".\logs\usuarios_$(Get-Date -Format 'yyyyMMdd').log"
 $DominioEmail = "@tiendairsig02.com"
 
 # Crear directorios necesarios
-$dataDir = Join-Path $PSScriptRoot "..\data"
-$logsDir = Join-Path $PSScriptRoot "..\logs"
+$dataDir = Join-Path $PSScriptRoot ".\staff"
+$logsDir = Join-Path $PSScriptRoot ".\logs"
 
 if (-not (Test-Path $dataDir)) { New-Item -ItemType Directory -Path $dataDir -Force | Out-Null }
 if (-not (Test-Path $logsDir)) { New-Item -ItemType Directory -Path $logsDir -Force | Out-Null }
